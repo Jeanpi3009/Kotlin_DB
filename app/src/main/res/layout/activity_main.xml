@@ -8,8 +8,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="411dp"
-        android:layout_height="156dp"
+        android:layout_width="323dp"
+        android:layout_height="138dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,7 +18,7 @@
         app:layout_constraintVertical_bias="0.12">
 
         <EditText
-            android:id="@+id/id"
+            android:id="@+id/txtid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -27,7 +27,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/nombre"
+            android:id="@+id/txtnombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -36,11 +36,11 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/cantidad"
+            android:id="@+id/txtlista"
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:ems="10"
-            android:hint="Cantidad"
+            android:hint="Edad"
             android:inputType="textPersonName"
             android:textSize="20sp" />
 
@@ -105,9 +105,8 @@
 
     <TextView
         android:id="@+id/lista"
-        android:layout_width="263dp"
-        android:layout_height="226dp"
-        android:text="lista"
+        android:layout_width="406dp"
+        android:layout_height="216dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

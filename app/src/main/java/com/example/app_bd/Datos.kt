@@ -1,10 +1,10 @@
 package com.example.app_bd
 
-class Datos {
+class Usuario {
 
     constructor(nombre: String, cantidad: Int) {
         this.nombre = nombre
-        this.cantidad = cantidad
+        this.edad = cantidad
     }
 
     constructor(){
@@ -13,5 +13,5 @@ class Datos {
 
     var id:Int=0
     var nombre:String=""
-    var cantidad:Int=0
+    var edad:Int=0
 }

@@ -7,109 +7,69 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 
-class Base_DT (contexto: Context):SQLiteOpenHelper(contexto, "BdDatos",null ,1){
-
+class BasesDatos(contexto:Context):SQLiteOpenHelper(contexto,"BD",null,1) {
     override fun onCreate(db: SQLiteDatabase?) {
-        var sql="CREATE TABLE producto (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(80), cantidad INTEGER)"
+        var sql="CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT,nombre VARCHAR(250),edad INTEGER)"
         db?.execSQL(sql)
     }
-
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         TODO("Not yet implemented")
     }
 
-    fun guardarDatos(datos:Datos):String{
-        val db =this.writableDatabase
-        var contenedor= ContentValues()
-        contenedor.put("nombre",datos.nombre)
-        contenedor.put("cantidad",datos.cantidad)
-        try {
-
-            var resultado=db.insert("producto", null, contenedor)
-            if(resultado == -1.toLong()){
-                return "Falla en la insersion"
-            }else{
-                return "Se grabo exitosamente"
+    fun borrar(id: String){
+        if(id.length>0){
+            if(id.length>0){
+                val db =this.writableDatabase
+                db.delete("usuario","id=?", arrayOf(id))
+                db.close()
             }
-        }catch (ex:Exception){
-            return ex.message.toString()
-        }finally {
-            db.close()
         }
     }
-
-    fun actualizarDatos(id:Int,nombre:String,cantidad:Int):String{
-
-        val db =this.writableDatabase
-        var contenedor= ContentValues()
-        contenedor.put("nombre",nombre)
-        contenedor.put("cantidad",cantidad)
-        try {
-
-            var resultado=db.update("producto", contenedor, "id=?", arrayOf(id.toString()))
-            if(resultado>0){
-                return "Actualizacion exitosa"
-            }else {
-                return "Falla en la actualizacion"
-            }
-        }catch (ex:Exception){
-            return ex.message.toString()
-        }finally {
-            db.close()
-        }
-    }
-
-//    fun actualizarDatos2(datos: Datos):String{
-//        val db =this.writableDatabase
-//        var contenedor= ContentValues()
-//        contenedor.put("nombre",datos.nombre)
-//        contenedor.put("cantidad",datos.cantidad)
-//        try {
-//
-//            var resultado=db.update("producto", contenedor, "id=?", arrayOf(datos.id.toString()))
-//            if(resultado>0){
-//                return "Actualizacion exitosa"
-//            }else {
-//                return "Falla en la actualizacion"
-//            }
-//        }catch (ex:Exception){
-//            return ex.message.toString()
-//        }finally {
-//            db.close()
-//        }
-//    }
-
-    fun borrarDatos(id:Int):String{
+    fun actualizarDatos(id:String,nombre:String,edad:Int):String{
         val db = this.writableDatabase
-        if (id != 0) {
-            db.delete("producto", "id=?", arrayOf(id.toString()))
-            return "Se ah borrado el registro exitosamente"
-        }else{
-            return "No se ah podido borrar el registro"
+        var contenedor =ContentValues()
+        contenedor.put("nombre",nombre)
+        contenedor.put("edad",edad)
+        var resultado =db.update("usuario",contenedor,"id=?", arrayOf(id))
+        if(resultado>0){
+            return "Actualizacion realizada"
+        }else
+        {
+            return "no actualizado"
         }
     }
-
-    @SuppressLint("Range", "SuspiciousIndentation")
-    fun ListarDatos():MutableList<Datos>{
-        val lista:MutableList<Datos> = ArrayList()
-        val db=this.readableDatabase
-        val sql="select * from producto"
-        var resultado=db.rawQuery(sql,null)
+    fun insertarDatos(usuario:Usuario):String{
+        val db = this.writableDatabase
+        var contenedor =ContentValues()
+        contenedor.put("nombre",usuario.nombre)
+        contenedor.put("edad",usuario.edad)
+        var resultado =db.insert("usuario",null,contenedor)
+        if(resultado==-1.toLong()){
+            return "Existió una falla en base de datos"
+        }else
+        {
+            return "Insertado"
+        }
+    }
+    @SuppressLint("Range")
+    fun listarDatos():MutableList<Usuario>{
+        val lista:MutableList<Usuario> = ArrayList()
+        val db = this.readableDatabase
+        val sql = "select * from usuario"
+        var resultado =db.rawQuery(sql,null)
         if(resultado.moveToFirst()){
-
-            do {
-                var datosp=Datos()
-                datosp.id = resultado.getString(resultado.getColumnIndex("id")).toInt()
-                datosp.nombre = resultado.getString(resultado.getColumnIndex("nombre"))
-                datosp.cantidad = resultado.getString(resultado.getColumnIndex("cantidad")).toInt()
-                    lista.add(datosp)
-            }while (resultado.moveToNext())
+            do{
+                var usu = Usuario()
+                usu.id = resultado.getString(resultado.getColumnIndex("id")).toInt()
+                usu.nombre = resultado.getString(resultado.getColumnIndex("nombre"))
+                usu.edad = resultado.getString(resultado.getColumnIndex("edad")).toInt()
+                lista.add(usu)
+            } while(resultado.moveToNext())
             resultado.close()
             db.close()
         }
         return lista
     }
 }
-
 
 
